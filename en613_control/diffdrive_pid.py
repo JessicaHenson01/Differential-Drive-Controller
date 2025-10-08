@@ -49,8 +49,6 @@ class MinimalSubscriber(Node):
         if self.goal_x is None:
             # If there's no goal, do nothing.
             return
-
-        # --- This is your original code to get the robot's pose ---
         try:
             transform = self.tf_buffer.lookup_transform('odom', 'chassis', rclpy.time.Time())
         except (tf2_ros.LookupException, tf2_ros.ExtrapolationException) as e:
@@ -61,14 +59,11 @@ class MinimalSubscriber(Node):
         y = transform.transform.translation.y
         q = transform.transform.rotation
         _, _, yaw = self.quaternion_to_euler(q.x, q.y, q.z, q.w)
-        # --- End of your original pose code ---
 
-        # --- This is your original code to calculate dt ---
         now = self.get_clock().now()
         dt = (now - self.prev_time).nanoseconds / 1e9
         if dt <= 1e-6:
             return
-        # --- End of your original dt code ---
         
         # 1. Calculate all possible errors up front
         distance_error = math.sqrt((self.goal_x - x)**2 + (self.goal_y - y)**2)
@@ -105,7 +100,6 @@ class MinimalSubscriber(Node):
             self.prev_error_linear = current_linear_error
             self.prev_error_angular = current_angular_error
 
-        # --- This is your original code for clipping and publishing ---
         linear_speed = np.clip(linear_speed, -0.5, 0.5)
         angular_speed = np.clip(angular_speed, -1.0, 1.0)
 
@@ -115,7 +109,7 @@ class MinimalSubscriber(Node):
         self.cmd_pub.publish(cmd)
 
         self.prev_time = now
-        # --- End of your original code ---
+
         
     @staticmethod
     def quaternion_to_euler(x, y, z, w):
