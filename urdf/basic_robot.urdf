@@ -1,0 +1,120 @@
+<?xml version="1.0"?>
+<robot name="differential_drive_robot">
+
+  <!-- MATERIALS -->
+
+  <material name="blue">
+    <color rgba="0 0 0.8 1"/>
+  </material>
+
+  <material name="red">
+    <color rgba="0.8 0 0 1"/>
+  </material>
+
+  <material name="green">
+    <color rgba="0 0.8 0 1"/>
+  </material>
+  
+  <material name="grey">
+    <color rgba="0.5 0.5 0.5 1"/>
+  </material>
+
+  <!--  LINKS  -->
+
+  <!-- Base Link (Chassis) -->
+  <link name="chassis">
+    <visual>
+      <geometry>
+        <!-- Dimensions: 0.825m wide, 0.825m long, 7.5cm tall -->
+        <box size="0.825 0.825 0.075"/>
+      </geometry>
+      <material name="grey"/>
+    </visual>
+    <collision>
+      <geometry>
+        <box size="0.825 0.825 0.075"/>
+      </geometry>
+    </collision>
+  </link>
+
+  <!-- Left Wheel Link -->
+  <link name="left_wheel">
+    <visual>
+      <!-- Stands upright like a wheel -->
+      <origin rpy="1.57079632679 0 0" xyz="0 0 0"/>
+      <geometry>
+        <!-- Radius: 0.4m, Thickness: 5cm -->
+        <cylinder radius="0.4" length="0.05"/>
+      </geometry>
+      <material name="blue"/>
+    </visual>
+    <collision>
+      <origin rpy="1.57079632679 0 0" xyz="0 0 0"/>
+      <geometry>
+        <cylinder radius="0.4" length="0.05"/>
+      </geometry>
+    </collision>
+  </link>
+
+  <!-- Right Wheel Link -->
+  <link name="right_wheel">
+    <visual>
+      <origin rpy="1.57079632679 0 0" xyz="0 0 0"/>
+      <geometry>
+        <cylinder radius="0.4" length="0.05"/>
+      </geometry>
+      <material name="red"/>
+    </visual>
+    <collision>
+      <origin rpy="1.57079632679 0 0" xyz="0 0 0"/>
+      <geometry>
+        <cylinder radius="0.4" length="0.05"/>
+      </geometry>
+    </collision>
+  </link>
+  
+  <!-- LIDAR Dome Link -->
+  <link name="lidar_dome">
+    <visual>
+      <geometry>
+        <!-- Radius: 3.125cm -->
+        <sphere radius="0.03125"/>
+      </geometry>
+      <material name="green"/>
+    </visual>
+    <collision>
+       <geometry>
+        <sphere radius="0.03125"/>
+      </geometry>
+    </collision>
+  </link>
+
+
+  <!-- JOINTS -->
+
+  <!-- Left Wheel Joint -->
+  <joint name="chassis_to_left_wheel" type="continuous">
+    <parent link="chassis"/>
+    <child link="left_wheel"/>
+    <!-- Positioned at the center of the chassis side -->
+    <origin xyz="0 -0.4375 0"/>
+    <axis xyz="0 1 0"/>
+  </joint>
+
+  <!-- Right Wheel Joint -->
+  <joint name="chassis_to_right_wheel" type="continuous">
+    <parent link="chassis"/>
+    <child link="right_wheel"/>
+    <origin xyz="0 0.4375 0"/>
+    <axis xyz="0 1 0"/>
+  </joint>
+  
+  <!-- LIDAR Dome Joint -->
+  <joint name="chassis_to_lidar" type="fixed">
+    <parent link="chassis"/>
+    <child link="lidar_dome"/>
+    <!-- Positioned 0.3m forward and centered on the top surface of the chassis -->
+    <origin xyz="0.3 0 0.0375"/>
+  </joint>
+
+</robot>
