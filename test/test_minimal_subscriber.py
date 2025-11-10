@@ -4,7 +4,7 @@ import types
 import numpy as np
 from unittest.mock import MagicMock, patch
 from geometry_msgs.msg import Twist, PoseStamped
-from your_package_name.minimal_subscriber import MinimalSubscriber  # adjust import
+from en613_control.minimal_subscriber import MinimalSubscriber  # adjust import
 
 
 @pytest.fixture
